@@ -1,30 +1,111 @@
-# React + TypeScript + Vite
+# 제품 요구사항 문서 (PRD)
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+> 테스트 코드 설명을 위한 가상 PRD
 
-Currently, two official plugins are available:
+## vitesto-do
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+### 1. 개요
 
-## Expanding the ESLint configuration
+- **앱 이름:** vitesto-do
+- **버전:** 1.0, 2.0, 3.0
+- **작성일:** 2024년 6월 15일
+- **작성자:** [사용자 이름]
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+### 2. 목적
 
-- Configure the top-level `parserOptions` property like this:
+- **목적:** 사용자들이 편하고 가볍게 다가갈 수 있는 todo 리스트 앱을 제공하여, 일상적인 작업 관리와 일정 관리를 돕는 것을 목표로 합니다.
+  - **1차 개발:** 기본적인 작업 관리 기능 제공
+  - **2차 개발:** 작업 관리의 효율성을 높이기 위한 추가 기능 제공
+  - **3차 개발:** 사용자 경험을 향상시키기 위한 테마 기능 제공
 
-```js
-export default {
-  // other rules...
-  parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-  },
-}
-```
+### 3. 목표
 
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+- **사용자 생산성 향상:** 사용자들이 효과적으로 작업을 관리하고 생산성을 높일 수 있도록 지원합니다.
+- **작업 관리 효율성 증대:** 직관적이고 간편한 인터페이스를 통해 작업 관리의 효율성을 높입니다.
+- **사용자 경험 개선:** 간편하고 직관적인 사용자 경험을 제공하여 앱의 사용성을 극대화합니다.
+- **1차 개발 목표:** 기본적인 작업 생성, 읽기, 수정, 삭제, 필터링 및 알림 기능 제공
+- **2차 개발 목표:** 작업 트래킹, 정렬 및 고급 필터링 기능 제공
+- **3차 개발 목표:** Light Theme 및 Dark Theme 지원 및 자동 테마 변경 기능 제공
+
+### 4. 대상 사용자
+
+- **대상 사용자:** 개발자
+  - 작업의 복잡성과 양이 많아 효율적인 관리가 필요한 사용자
+  - 생산성 향상을 위해 다양한 작업 관리 도구를 사용하는 사용자
+- **3차 개발 추가 대상 사용자:** 모든 사용자
+  - 다양한 조명 환경에서 작업하는 사용자
+  - 개인화된 사용자 경험을 원하는 사용자
+
+### 5. 주요 기능 (1차 개발)
+
+- **작업 생성**
+  - 사용자가 새로운 작업을 쉽게 생성할 수 있는 기능
+  - 작업 제목, 설명, 기한, 우선순위 등을 입력할 수 있음
+- **작업 읽기**
+  - 사용자가 생성된 작업을 조회할 수 있는 기능
+  - 전체 작업 목록과 개별 작업 상세 보기 제공
+- **작업 수정**
+  - 사용자가 기존 작업을 수정할 수 있는 기능
+  - 작업 제목, 설명, 기한, 우선순위 등을 수정 가능
+- **작업 삭제**
+  - 사용자가 기존 작업을 삭제할 수 있는 기능
+  - 작업 목록에서 쉽게 삭제 가능
+- **작업 필터링**
+  - 사용자가 작업 목록을 다양한 조건으로 필터링할 수 있는 기능
+  - 기한, 우선순위, 상태 등으로 필터링 가능
+- **알림**
+  - 중요한 작업이나 기한이 다가올 때 사용자에게 알림을 보내는 기능
+  - 이메일 및 푸시 알림 지원
+
+### 6. 주요 기능 (2차 개발)
+
+- **작업 트래킹**
+  - 진행 중인 작업을 추적하고 완료된 작업을 기록하는 기능
+  - 작업 진행 상태(예: 진행 중, 완료)를 표시
+- **작업 정렬 (Sorting)**
+  - 사용자가 작업 목록을 다양한 기준으로 정렬할 수 있는 기능
+  - 기한, 우선순위, 생성일 등으로 정렬 가능
+- **작업 필터링**
+  - 사용자가 작업 목록을 다양한 조건으로 필터링할 수 있는 기능
+  - 기한, 우선순위, 상태 등으로 필터링 가능
+
+### 7. 주요 기능 (3차 개발)
+
+- **Light Theme 및 Dark Theme 지원**
+  - 사용자가 앱 내에서 light theme과 dark theme을 선택할 수 있는 기능
+  - 설정 메뉴에서 테마 변경 가능
+- **자동 테마 변경**
+  - 시스템 설정에 따라 자동으로 light theme과 dark theme이 전환되는 기능
+  - 사용자 설정에 따라 수동으로 전환 가능
+
+### 8. 사용자 인터페이스
+
+- **사용자 인터페이스:** 특별한 요구사항 없음
+  - 간편하고 직관적인 UI/UX 디자인
+  - 모바일 친화적인 웹 디자인
+  - 테마에 따라 변경되는 인터페이스 요소
+
+### 9. 플랫폼
+
+- **플랫폼:** 웹 앱 (Web app)
+  - 반응형 웹 디자인으로 다양한 디바이스에서 접근 가능
+  - 크로스 브라우저 호환성
+
+### 10. 경쟁자 분석
+
+- **경쟁자:**
+  - Todoist, Trello, Microsoft To-Do 등 유사한 todo 리스트 앱 분석
+  - 경쟁 앱의 장단점을 파악하여 vitesto-do에 반영
+  - 경쟁 앱에서 제공하지 않는 차별화된 기능 또는 사용자 경험 제공
+
+### 11. 성공 지표
+
+- **성공 지표:**
+  - 다운로드 수 및 사용자 수: 일정 기간 내 목표 사용자 수 달성
+  - 사용자 유지율: 앱 설치 후 일정 기간 동안의 사용자 유지 비율
+  - 사용자 만족도 조사 결과: 사용자 피드백을 통한 만족도 조사
+  - 테마 기능 사용률: 테마 변경 기능을 사용한 사용자 비율
+
+### 12. 추가 요구사항
+
+- **추가 요구사항:** 없음
