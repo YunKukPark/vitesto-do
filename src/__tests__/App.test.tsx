@@ -74,5 +74,19 @@ describe('⚛️ App Page', () => {
         expect(select.value).toBe(Status.NotStarted);
       });
     });
+
+    describe('✨ 작업 삭제 기능', () => {
+      test('📍 사용자는 작업을 삭제할 수 있다', async () => {
+        const deleteButtonList = await screen.findAllByRole('button', {
+          name: '삭제',
+        });
+
+        const deleteButton = deleteButtonList[0];
+        await user.click(deleteButton);
+
+        const todoItems = await screen.findAllByRole('listitem');
+        expect(todoItems).toHaveLength(5);
+      });
+    });
   });
 });

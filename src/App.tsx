@@ -27,6 +27,10 @@ function App() {
       );
     };
 
+  const handleDeleteTodo = (id: Todo['id']) => () => {
+    setTodos(prev => prev.filter(todo => todo.id !== id));
+  };
+
   const handlePressEnter: React.KeyboardEventHandler<HTMLInputElement> = e => {
     if (e.key !== 'Enter' || newTodo.trim().length === 0) return;
 
@@ -80,6 +84,9 @@ function App() {
                 ))}
               </select>
               <h3>{todo.title}</h3>
+              <button onClick={handleDeleteTodo(todo.id)} aria-label="삭제">
+                ❌
+              </button>
             </S.Flex>
             <div>
               {todo.dueDate && <p>Due Date: {todo.dueDate.toString()}</p>}
