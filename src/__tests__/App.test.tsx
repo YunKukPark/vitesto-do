@@ -1,4 +1,5 @@
 import App from '../App';
+import { Status } from '../services/task.schema';
 import { cleanup, render, screen } from '../test-utils';
 import userEvent from '@testing-library/user-event';
 
@@ -59,24 +60,18 @@ describe('⚛️ App Page', () => {
     });
 
     describe('✨ 작업 수정 기능', () => {
-      // 수정 가능 : title, status, priority WIP 🚧
-      test('📍 사용자는 작업을 수정할 수 있다', async () => {
-        const todoItem = await screen.findByText(
-          'Complete TypeScript tutorial'
-        );
-        const editButton = todoItem.nextElementSibling?.querySelector('button');
-        await user.click(editButton!);
+      // 수정 가능 : 예시는 status만
+      test('📍 사용자는 상태를 수정할 수 있다', async () => {
+        const todoList = await screen.findAllByRole('listitem');
+        const todoItem = todoList[0];
 
-        const input = todoItem.nextElementSibling?.querySelector('input');
-        expect(input).toBeInTheDocument();
+        const select = todoItem.querySelector('select') as HTMLSelectElement;
 
-        await user.clear(input!);
-        await user.type(input!, 'Complete TypeScript tutorial 수정{enter}');
+        await userEvent.selectOptions(select, Status.Completed);
+        expect(select.value).toBe(Status.Completed);
 
-        const updatedTodoItem = await screen.findByText(
-          'Complete TypeScript tutorial 수정'
-        );
-        expect(updatedTodoItem).toBeInTheDocument();
+        await userEvent.selectOptions(select, Status.NotStarted);
+        expect(select.value).toBe(Status.NotStarted);
       });
     });
   });

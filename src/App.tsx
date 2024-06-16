@@ -19,6 +19,14 @@ function App() {
     setNewTodo(e.currentTarget.value);
   };
 
+  const handleChangeStatus =
+    (id: Todo['id']) => (e: React.ChangeEvent<HTMLSelectElement>) => {
+      const status = e.currentTarget.value as Status;
+      setTodos(prev =>
+        prev.map(todo => (todo.id === id ? { ...todo, status } : todo))
+      );
+    };
+
   const handlePressEnter: React.KeyboardEventHandler<HTMLInputElement> = e => {
     if (e.key !== 'Enter' || newTodo.trim().length === 0) return;
 
@@ -61,7 +69,16 @@ function App() {
         {todos.map(todo => (
           <S.TodoItem key={todo.id}>
             <S.Flex gap="4px">
-              <span>{StatusBadgeMap[todo.status]}</span>
+              <select
+                value={todo.status}
+                onChange={handleChangeStatus(todo.id)}
+              >
+                {Object.values(Status).map(status => (
+                  <option key={status} value={status}>
+                    {StatusBadgeMap[status]}
+                  </option>
+                ))}
+              </select>
               <h3>{todo.title}</h3>
             </S.Flex>
             <div>
