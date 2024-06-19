@@ -72,7 +72,7 @@ function App() {
       <S.TodoList>
         {todos.map(todo => (
           <S.TodoItem key={todo.id}>
-            <S.Flex gap="4px">
+            <S.Flex $gap="4px">
               <select
                 value={todo.status}
                 onChange={handleChangeStatus(todo.id)}
@@ -104,8 +104,8 @@ export default App;
 const StatusBadgeMap = {
   [Status.NotStarted]: '🔴',
   [Status.Pending]: '🟡',
-  [Status.InProgress]: '🟢',
-  [Status.Completed]: '🔵',
+  [Status.InProgress]: '🔵',
+  [Status.Completed]: '🟢',
 };
 
 // styles...
@@ -161,9 +161,9 @@ const S = {
     text-align: center;
   `,
 
-  Flex: styled.div<{ gap?: string }>`
+  Flex: styled.div<{ $gap?: string }>`
     ${flexBox()};
-    gap: ${({ gap }) => gap};
+    gap: ${({ $gap }) => $gap};
   `,
 
   TodoList: styled.ul`
