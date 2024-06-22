@@ -3,11 +3,13 @@ import TaskService from './services/Task.service';
 import { Priority, Status, Todo } from './services/task.schema';
 import styled, { css } from 'styled-components';
 import './App.css';
+import { getDistanceDate } from './utils';
+import { useTaskReducer } from './useTaskReducer';
 
 function App() {
+  const { todos, dispatch } = useTaskReducer();
   const [isAdding, setIsAdding] = useState(false);
   const [newTodo, setNewTodo] = useState('');
-  const [todos, setTodos] = useState<Todo[]>([]);
 
   const handleClickAddTodoButton = () => {
     setIsAdding(prev => !prev);
@@ -22,17 +24,25 @@ function App() {
   const handleChangeStatus =
     (id: Todo['id']) => (e: React.ChangeEvent<HTMLSelectElement>) => {
       const status = e.currentTarget.value as Status;
-      setTodos(prev =>
-        prev.map(todo => (todo.id === id ? { ...todo, status } : todo))
-      );
+      dispatch({ type: 'CHANGE_STATUS', payload: { id, status } });
     };
 
   const handleDeleteTodo = (id: Todo['id']) => () => {
-    setTodos(prev => prev.filter(todo => todo.id !== id));
+    dispatch({ type: 'DELETE_TODO', payload: id });
+  };
+
+  const handleClickSortPriority = () => {
+    dispatch({ type: 'SORT_PRIORITY' });
+  };
+
+  const handleClickSortStatus = () => {
+    dispatch({ type: 'SORT_STATUS' });
   };
 
   const handlePressEnter: React.KeyboardEventHandler<HTMLInputElement> = e => {
     if (e.key !== 'Enter' || newTodo.trim().length === 0) return;
+
+    console.log(newTodo.trim(), 'newTodo.trim()');
 
     TaskService.postTodo({
       title: newTodo.trim(),
@@ -42,14 +52,17 @@ function App() {
       createdAt: new Date(),
       updatedAt: null,
     }).then(data => {
-      setTodos(data);
+      console.log('data: ', data);
+      dispatch({ type: 'ADD_TODO', payload: data });
       setNewTodo('');
       setIsAdding(false);
     });
   };
 
   useEffect(() => {
-    TaskService.getTodos().then(data => setTodos(data));
+    TaskService.getTodos().then(data => {
+      dispatch({ type: 'INIT', payload: data });
+    });
   }, []);
 
   return (
@@ -69,6 +82,10 @@ function App() {
           onKeyDown={handlePressEnter}
         />
       )}
+      <S.Flex $gap="8px">
+        <button onClick={handleClickSortPriority}>우선순위별</button>
+        <button onClick={handleClickSortStatus}>상태별</button>
+      </S.Flex>
       <S.TodoList>
         {todos.map(todo => (
           <S.TodoItem key={todo.id}>
@@ -88,10 +105,12 @@ function App() {
                 ❌
               </button>
             </S.Flex>
-            <div>
-              {todo.dueDate && <p>Due Date: {todo.dueDate.toString()}</p>}
-              <p>Priority: {todo.priority}</p>
-            </div>
+            <S.Flex $gap="8px">
+              {todo.dueDate && (
+                <p>Due Date: {getDistanceDate(new Date(todo.dueDate))}</p>
+              )}
+              <p>{PriorityBadgeMap[todo.priority]}</p>
+            </S.Flex>
           </S.TodoItem>
         ))}
       </S.TodoList>
@@ -106,6 +125,12 @@ const StatusBadgeMap = {
   [Status.Pending]: '🟡',
   [Status.InProgress]: '🔵',
   [Status.Completed]: '🟢',
+};
+
+const PriorityBadgeMap = {
+  [Priority.Low]: '⬇️',
+  [Priority.Medium]: '➡️',
+  [Priority.High]: '⬆️',
 };
 
 // styles...
