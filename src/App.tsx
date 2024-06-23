@@ -11,10 +11,6 @@ function App() {
   const [isAdding, setIsAdding] = useState(false);
   const [newTodo, setNewTodo] = useState('');
 
-  const handleClickAddTodoButton = () => {
-    setIsAdding(prev => !prev);
-  };
-
   const handleChangeAddTodoInput: React.ChangeEventHandler<
     HTMLInputElement
   > = e => {
@@ -27,22 +23,16 @@ function App() {
       dispatch({ type: 'CHANGE_STATUS', payload: { id, status } });
     };
 
-  const handleDeleteTodo = (id: Todo['id']) => () => {
-    dispatch({ type: 'DELETE_TODO', payload: id });
-  };
-
-  const handleClickSortPriority = () => {
-    dispatch({ type: 'SORT_PRIORITY' });
-  };
-
-  const handleClickSortStatus = () => {
-    dispatch({ type: 'SORT_STATUS' });
+  const handleClick = {
+    add: () => setIsAdding(prev => !prev),
+    delete: (id: Todo['id']) => () =>
+      dispatch({ type: 'DELETE_TODO', payload: id }),
+    sortPriority: () => dispatch({ type: 'SORT_PRIORITY' }),
+    sortStatus: () => dispatch({ type: 'SORT_STATUS' }),
   };
 
   const handlePressEnter: React.KeyboardEventHandler<HTMLInputElement> = e => {
     if (e.key !== 'Enter' || newTodo.trim().length === 0) return;
-
-    console.log(newTodo.trim(), 'newTodo.trim()');
 
     TaskService.postTodo({
       title: newTodo.trim(),
@@ -52,8 +42,7 @@ function App() {
       createdAt: new Date(),
       updatedAt: null,
     }).then(data => {
-      console.log('data: ', data);
-      dispatch({ type: 'ADD_TODO', payload: data });
+      dispatch({ type: 'SET_TODOS', payload: data });
       setNewTodo('');
       setIsAdding(false);
     });
@@ -61,7 +50,7 @@ function App() {
 
   useEffect(() => {
     TaskService.getTodos().then(data => {
-      dispatch({ type: 'INIT', payload: data });
+      dispatch({ type: 'SET_TODOS', payload: data });
     });
   }, []);
 
@@ -69,7 +58,7 @@ function App() {
     <S.Container>
       <S.Header>
         <S.Title>My Todo List</S.Title>
-        <button aria-label="추가하기" onClick={handleClickAddTodoButton}>
+        <button aria-label="추가하기" onClick={handleClick.add}>
           🌱
         </button>
       </S.Header>
@@ -83,8 +72,8 @@ function App() {
         />
       )}
       <S.Flex $gap="8px">
-        <button onClick={handleClickSortPriority}>우선순위별</button>
-        <button onClick={handleClickSortStatus}>상태별</button>
+        <button onClick={handleClick.sortPriority}>우선순위별</button>
+        <button onClick={handleClick.sortStatus}>상태별</button>
       </S.Flex>
       <S.TodoList>
         {todos.map(todo => (
@@ -101,7 +90,7 @@ function App() {
                 ))}
               </select>
               <h3>{todo.title}</h3>
-              <button onClick={handleDeleteTodo(todo.id)} aria-label="삭제">
+              <button onClick={handleClick.delete(todo.id)} aria-label="삭제">
                 ❌
               </button>
             </S.Flex>

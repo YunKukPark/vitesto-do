@@ -24,7 +24,7 @@ export const handlers = [
   }),
 ];
 
-const TODO_LIST_MOCK = [
+export const TODO_LIST_MOCK = [
   {
     id: 1,
     title: 'Complete TypeScript tutorial',

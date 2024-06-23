@@ -2,19 +2,20 @@ import { useReducer } from 'react';
 import { Priority, Status, Todo } from './services/task.schema';
 
 type Action =
-  | { type: 'INIT'; payload: Array<Todo> }
+  | { type: 'SET_TODOS'; payload: Array<Todo> }
   | { type: 'CHANGE_STATUS'; payload: { id: Todo['id']; status: Status } }
   | { type: 'DELETE_TODO'; payload: Todo['id'] }
   | { type: 'SORT_PRIORITY' }
-  | { type: 'SORT_STATUS' }
-  | { type: 'SET_TODOS'; payload: Array<Todo> }
-  | { type: 'ADD_TODO'; payload: Todo };
+  | { type: 'SORT_STATUS' };
 
 const initialState: Array<Todo> = [];
 
-const taskReducer = (state: Array<Todo>, action: Action): Array<Todo> => {
+export const taskReducer = (
+  state: Array<Todo>,
+  action: Action
+): Array<Todo> => {
   switch (action.type) {
-    case 'INIT':
+    case 'SET_TODOS':
       return action.payload;
 
     case 'CHANGE_STATUS':
@@ -47,12 +48,6 @@ const taskReducer = (state: Array<Todo>, action: Action): Array<Todo> => {
       return [...state].sort(
         (a, b) => statusOrder[a.status] - statusOrder[b.status]
       );
-
-    case 'SET_TODOS':
-      return action.payload;
-
-    case 'ADD_TODO':
-      return [...state, action.payload];
 
     default:
       return state;
